@@ -1,22 +1,30 @@
 package Team1;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 public class Simulation_Result extends JFrame {
+   
+   private File file;
+   public String getFile() {
+      return file.getAbsolutePath();
+   }
+   public void setFile(File file) {
+      this.file = file;
+   }
 
    private JPanel contentPane;
    JButton btnNewButton_2 = new JButton("\uBA54\uC778\uC73C\uB85C");
@@ -42,90 +50,99 @@ public class Simulation_Result extends JFrame {
    /**
     * Launch the application.
     */
-//   public static void main(String[] args) {
-//      EventQueue.invokeLater(new Runnable() {
-//         public void run() {
-//            try {
-//               Simulation_Result frame = new Simulation_Result();
-//               frame.setVisible(true);
-//            } catch (Exception e) {
-//               e.printStackTrace();
-//            }
-//         }
-//      });
-//   }
+   // public static void main(String[] args) {
+   // EventQueue.invokeLater(new Runnable() {
+   // public void run() {
+   // try {
+   // Simulation_Result frame = new Simulation_Result();
+   // frame.setVisible(true);
+   // } catch (Exception e) {
+   // e.printStackTrace();
+   // }
+   // }
+   // });
+   // }
 
    /**
     * Create the frame.
     */
    public Simulation_Result() {
-//      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setBounds(100, 100, 480, 320);
+      // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
+      // 캡쳐하기위해 창의 위치값을 정해놓지않는다.
+      setBounds(this.getX(), this.getY(), 480, 320);
       contentPane = new JPanel();
       contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
       contentPane.setLayout(new BorderLayout(0, 0));
       setContentPane(contentPane);
-      this.setLocationRelativeTo(null);
       setVisible(true);
       event();
       display();
-      
-   } 
-   private void display() {
-         contentPane.add(panel, BorderLayout.NORTH);
-         
-         panel.add(lblNewLabel);
-         
-         panel.add(lblNewLabel_1);
-                  panel.add(btnNewButton);
-         
-         contentPane.add(panel_1, BorderLayout.CENTER);
-         panel_1.setLayout(new GridLayout(1, 0, 0, 0));
-         
-         panel_1.add(panel_3);
-         panel_3.setLayout(new GridLayout(4, 1, 0, 0));
-         
-         panel_3.add(lblNewLabel_3);
-         
-         panel_3.add(lblNewLabel_5);
-         
-         panel_3.add(lblNewLabel_4);
-         
-         panel_3.add(lblNewLabel_6);
-         
-         panel_1.add(panel_4);
-         panel_4.setLayout(new GridLayout(4, 0, 0, 0));
-         
-         panel_4.add(textArea);
-         
-         panel_4.add(formattedTextField);
-         
-         panel_4.add(formattedTextField_1);
-         
-         panel_4.add(formattedTextField_2);
-         
-         contentPane.add(panel_2, BorderLayout.SOUTH);
-                 
-         panel_2.add(btnNewButton_1);
-         
-         panel_2.add(lblNewLabel_2);
-         
-         
-         panel_2.add(btnNewButton_2);
-      }
-   
-   private void event() {
-      btnNewButton.addActionListener(e->{
-         Board_Edit BE = new Board_Edit();
-      });
+
    }
 
+   private void display() {
+      contentPane.add(panel, BorderLayout.NORTH);
+
+      panel.add(lblNewLabel);
+
+      panel.add(lblNewLabel_1);
+      panel.add(btnNewButton);
+
+      contentPane.add(panel_1, BorderLayout.CENTER);
+      panel_1.setLayout(new GridLayout(1, 0, 0, 0));
+
+      panel_1.add(panel_3);
+      panel_3.setLayout(new GridLayout(4, 1, 0, 0));
+
+      panel_3.add(lblNewLabel_3);
+
+      panel_3.add(lblNewLabel_5);
+
+      panel_3.add(lblNewLabel_4);
+
+      panel_3.add(lblNewLabel_6);
+
+      panel_1.add(panel_4);
+      panel_4.setLayout(new GridLayout(4, 0, 0, 0));
+
+      panel_4.add(textArea);
+
+      panel_4.add(formattedTextField);
+
+      panel_4.add(formattedTextField_1);
+
+      panel_4.add(formattedTextField_2);
+
+      contentPane.add(panel_2, BorderLayout.SOUTH);
+
+      panel_2.add(btnNewButton_1);
+
+      panel_2.add(lblNewLabel_2);
+
+      panel_2.add(btnNewButton_2);
+   }
+
+   private void event() {
+      btnNewButton.addActionListener(event -> {
+         try {
+            //파일명 렌던으로
+            int random = (int)(Math.random()*99999);
+            Robot r = new Robot();
+            Rectangle rect = new Rectangle(this.getX(), this.getY(), 480, 320);// 좌표가 창의위치를 따라간다.
+            BufferedImage img = r.createScreenCapture(rect);
+            file = new File("images", "save"+"_"+random+".png");
+            ImageIO.write(img, "png", file);         
+         } catch (Exception e) {
+            e.printStackTrace();
+         }
+         Board_Edit BE = new Board_Edit(file);
+      });
+   }
 }
 
-
-
 //
-//btnNewButton_1.addActionListener(new ActionListener() {
-//    public void actionPerformed(ActionEvent e) {
-//    }
+// btnNewButton_1.addActionListener(new ActionListener() {
+// public void actionPerformed(ActionEvent e) {
+// }
 // });
